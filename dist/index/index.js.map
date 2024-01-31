@@ -1,1 +1,0 @@
-{"version":3,"file":"/index/index.js","mappings":";;;AAAqB;AAErBA,OAAO,CAACC,GAAG,CAAC,MAAM,CAAC,C","sources":["webpack://message-ai/./src/index/index.js"],"sourcesContent":["import './index.css';\r\n\r\nconsole.log('blah');"],"names":["console","log"],"sourceRoot":""}

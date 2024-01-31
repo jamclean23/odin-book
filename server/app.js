@@ -63,7 +63,7 @@ app.use(passport.session());
 app.use('/login', loginRoute);
 app.use('/register', checkNotAuth, registerRoute);
 app.use('/logout', checkAuth, logoutRoute);
-app.use('/', checkAuth, indexRoute);
+app.use('/', checkNotAuth, indexRoute);
 app.use(fourOhFourRoute);
 
 // ====== EXPORTS ======

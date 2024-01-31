@@ -19,7 +19,11 @@ function getDirectories (path) {
 
     try {
         directories = readdirSync(path, {withFileTypes: true})
-            .filter((dir) => dir.isDirectory())
+            .filter((dir) => {
+                console.log(dir);
+                // EXCLUDE DIRECTORIES HERE
+                return dir.isDirectory() && !(dir.name === 'functions') && !(dir.name === 'assets');
+            })
             .map((dir) => dir.name);
         return directories;
     } catch (err) {

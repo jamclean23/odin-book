@@ -9,7 +9,7 @@ function checkAuth (req, res, next) {
         return next();
     } else {
         console.log('Not Authenticated');
-        res.redirect('/login');
+        res.redirect('/');
     }
 }
 
