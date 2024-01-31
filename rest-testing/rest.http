@@ -1,0 +1,31 @@
+# Variables
+
+# Port being used by the server
+@PORT = 5555
+
+
+# ====== INDEX ======
+
+# Index page
+http://127.0.0.1:{{PORT}}
+
+
+# ====== LOGIN ======
+
+# Login page
+http://127.0.0.1:{{PORT}}/login
+
+# Login request
+POST http://127.0.0.1:{{PORT}}/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "test user",
+    "password": "test password"
+}
+
+
+# ====== REGISTER ======
+
+# Register page
+http://127.0.0.1:{{PORT}}/register
