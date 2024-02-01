@@ -8,6 +8,7 @@ const User = require('../models/user.js');
 
 // Passport
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // Encryption
 const bcrypt = require('bcryptjs');
@@ -51,24 +52,45 @@ function initialize (passport) {
         }
     };
 
-    passport.use(
-        new LocalStrategy({ usernameField: 'email' }, authenticateUser)
-    );
+    passport.use(new GoogleStrategy({
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: "http://127.0.0.1:5555/auth/google/callback"
+    },
+    (accessToken, refreshToken, profile, done) => {
+        console.log('USING GOOGLE STRATEGY');
+        profile;
+        return done(null, profile);
+    }
+    ));
+
+    // passport.use(
+    //     new LocalStrategy({ usernameField: 'email' }, authenticateUser)
+    // );
+
+    // passport.serializeUser((user, done) => {
+    //     done(null, user.id);
+    // });
+
+    // passport.deserializeUser(async (id, done) => {
+    //     let user;
+    //     try {
+    //         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
+    //         user = await User.findById(id);
+    //         done(null, user);
+    //     } catch (err) {
+    //         console.log(err);
+    //         done('pass');
+    //     }
+    // })
 
     passport.serializeUser((user, done) => {
-        done(null, user.id);
+        done(null, user);
     });
 
-    passport.deserializeUser(async (id, done) => {
-        let user;
-        try {
-            await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
-            user = await User.findById(id);
-            done(null, user);
-        } catch (err) {
-            console.log(err);
-        }
-    })
+    passport.deserializeUser((obj, done) => {
+        done(null, obj);
+    });
 
 }
 

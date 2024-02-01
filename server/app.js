@@ -34,6 +34,7 @@ const loginRoute = require('./routes/loginRoute.js').init(passport);
 const registerRoute = require('./routes/registerRoute.js');
 const fourOhFourRoute = require('./routes/fourOhFourRoute.js');
 const logoutRoute = require('./routes/logoutRoute.js');
+const testRoute = require('./routes/testRoute.js');
 
 // ====== GLOBAL VARS / INIT ======
 
@@ -55,16 +56,32 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
 app.use(passport.session());
 
 
 // ====== ROUTES ======
 
-app.use('/login', loginRoute);
+app.use('/login', checkNotAuth, loginRoute);
 app.use('/register', checkNotAuth, registerRoute);
 app.use('/logout', checkAuth, logoutRoute);
+
+// GOOGLE SIGN IN
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email']}));
+app.get('/auth/google/callback', 
+    passport.authenticate(
+        'google',
+        { failureRedirect: '/error' }),
+        (req, res) => {
+            // Successful authentication, redirect success.
+            res.redirect('/test');
+        }
+);
+
+app.use('/test', checkAuth, testRoute);
 app.use('/', checkNotAuth, indexRoute);
 app.use(fourOhFourRoute);
+
 
 // ====== EXPORTS ======
 

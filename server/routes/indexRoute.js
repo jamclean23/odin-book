@@ -6,13 +6,15 @@
 const express = require('express');
 const router = express.Router();
 
+const noCache = require('../middleware/noCache.js');
+
 // Controller
 const indexController = require('../controllers/indexController.js'); 
 
 
 // ====== ROUTES ======
 
-router.get('/', indexController.testIndexRoute);
+router.get('/', noCache, indexController.testIndexRoute);
 
 
 // ====== EXPORTS ======

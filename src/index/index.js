@@ -18,6 +18,7 @@ import initEventListeners from '../functions/initEventListeners.js';
 
 // ====== RENDER/MAIN ======
 
+
 initEventListeners();
 
 const root = createRoot(document.querySelector('#reactEntry'));

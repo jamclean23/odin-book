@@ -1,0 +1,124 @@
+/* COMMON =============================== */
+
+
+/* RippL header */
+.ripplHeader {
+    text-align: center;
+    color: white;
+    font-size: 3rem;
+}
+
+
+/* Slogan */
+.sloganTxtOuterWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.sloganTxtInnerWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 16rem;
+}
+
+.sloganTxt {
+    color: white;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.connectP {
+    text-align: start;
+}
+
+.flowP {
+    text-align: center;
+}
+
+.wanderP {
+    text-align:end
+}
+
+
+/* Container for sign in btns */
+.btnsWrapper {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* GOOGLE SIGN IN BUTTON */
+.gSignInBtn {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: 1px 1px 2px black;
+    text-decoration: none;
+    background-color: rgb(51, 186, 231);
+    overflow: hidden;
+    max-height: 2.5rem;
+    width: 16rem;
+}
+
+.gSignInBtn:hover {
+    background-color: rgb(133, 195, 216);
+}
+
+.gSignInBtn .imgWrapper {
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+
+.gSignInBtn .imgWrapper img {
+    max-height: 2.5rem;
+}
+
+.gSignInBtn .textWrapper {
+    font-family: serif;
+    font-weight: 550;
+    font-size: 1.1rem;
+    color: white;
+    max-height: 3rem;
+    text-align: center;
+    flex-grow: 1;
+}
+
+
+/* DESKTOP ========================*/
+@media screen and (min-width: 601px) {
+
+    .App {
+        height: var(--window-height);
+        width: var(--window-width);
+        display: grid;
+        grid-template-areas: "leftSection rightSection";
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .logoSection {
+        grid-area: leftSection;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .infoSection {
+        grid-area: rightSection;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ripplLogo {
+        max-height: 30rem;
+    }
+
+}
+
+
+/* MOBILE ==========================*/
+@media screen and (max-width: 600px) {
+    
+}
