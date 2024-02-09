@@ -23,11 +23,13 @@ function App () {
         <div className='App'>
 
             <section className='logoSection'>
-                <img className='ripplLogo' src={ripplLogo}/>
+                <h1 className='ripplHeader'>RippL</h1>
+                <div className='ripplLogoWrapper'>
+                    <img className='ripplLogo' src={ripplLogo}/>
+                </div>
             </section>
 
             <section className='infoSection'>
-                <h1 className='ripplHeader'>RippL</h1>
 
                 <div className='sloganTxtOuterWrapper'>
                     <div className='sloganTxtInnerWrapper'>
@@ -42,6 +44,33 @@ function App () {
                         <span className='imgWrapper'><img src={googleLogo}/></span>
                         <span className='textWrapper'>Continue with Google</span>
                     </a>
+                    <div className='orDiv'>
+                        <span>
+                            <div className='orLine'></div>
+                        </span>
+                        <span>or</span>
+                        <span>
+                            <div className='orLine'></div>
+                        </span>
+                    </div>
+                    <form className='signInForm'>
+                        <h2>Login</h2>
+                        <div className='inputWrapper'>
+                            <label>Username</label>
+                            <input name='username' type='text'/>
+                        </div>
+                        <div className='inputWrapper'>
+                            <label>Password</label>
+                            <input name='password' type='text'/>
+                        </div>
+                        <div className='submitBtnWrapper'>
+                            <button type='button'>Sign In</button>
+                        </div>
+                    </form>
+                    <div className='signUpDiv'>
+                        <span>No account?</span>
+                        <a href='/register'>Sign up</a>
+                    </div>
                 </div>
 
             </section>

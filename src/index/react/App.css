@@ -6,8 +6,16 @@
     text-align: center;
     color: white;
     font-size: 3rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
 }
-
+.ripplLogoWrapper {
+    display: flex;
+    justify-content: center;
+}
+.ripplLogo {
+    max-height: 30rem;
+}
 
 /* Slogan */
 .sloganTxtOuterWrapper {
@@ -46,6 +54,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: .5rem;
+}
+
+/* Container items */
+.btnsWrapper > * {
+    width: 16rem;
 }
 
 
@@ -59,7 +73,6 @@
     background-color: rgb(51, 186, 231);
     overflow: hidden;
     max-height: 2.5rem;
-    width: 16rem;
 }
 
 .gSignInBtn:hover {
@@ -86,6 +99,69 @@
     flex-grow: 1;
 }
 
+/* Or divider */
+.orDiv {
+    display: flex;
+    color: white;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+.orDiv :nth-child(1),
+.orDiv :nth-child(3) {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    padding-inline: 1rem;
+}
+.orLine {
+    border: 1px solid rgba(255, 255, 255, .3);
+    box-shadow: 0 0 2px rgba(255, 255, 255, .3);
+}
+
+/* Login form */
+.signInForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid rgba(255, 255, 255, .3);
+    padding-inline: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: white;
+}
+.signInForm h2 {
+    margin: 0;
+    color: white;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, .3);
+    padding-bottom: .5rem;
+}
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+.inputWrapper label {
+    text-align: center;
+}
+.inputWrapper input {
+    border-radius: 4px;
+}
+.signInForm .submitBtnWrapper {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* Sign up link */
+.signUpDiv {
+    display: flex;
+    justify-content: center;
+    gap: .5rem;
+    color: white;
+}
+
 
 /* DESKTOP ========================*/
 @media screen and (min-width: 601px) {
@@ -101,19 +177,20 @@
     .logoSection {
         grid-area: leftSection;
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
     }
 
     .infoSection {
         grid-area: rightSection;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
     }
 
-    .ripplLogo {
-        max-height: 30rem;
-    }
+
 
 }
 
