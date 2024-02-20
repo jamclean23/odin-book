@@ -26,12 +26,12 @@ require('dotenv').config({
 
 function initialize (passport) {
     
-    async function authenticateUser (email, password, done) {
+    async function authenticateUser (username, password, done) {
         let user;
 
         try {
             await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
-            user = await User.findOne({"email": email});
+            user = await User.findOne({"username": username});
 
             if (user == null) {
                 return done(null, false, { message: 'No user with that name.' });
@@ -41,7 +41,10 @@ function initialize (passport) {
 
             if (await bcrypt.compare(password, user.password)) {
                 console.log('Password correct.');
-                return done(null, user);
+                const newUserObj = Object.assign({ provider: 'local'}, user);
+                console.log('AFTER ASSIGNING PROVIDER:');
+                console.log(newUserObj);
+                return done(null, newUserObj);
             } else {
                 console.log('Password incorrect');
                 return done(null, false, { message: 'Incorrect password' });
@@ -80,7 +83,7 @@ function initialize (passport) {
     }
     ));
 
-    passport.use('local', new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, /* authenticateUser */testSignIn));
+    passport.use('local', new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, authenticateUser /*testSignIn*/));
 
     // passport.serializeUser((user, done) => {
     //     done(null, user.id);
