@@ -77,6 +77,15 @@ app.get('/auth/google/callback',
             res.redirect('/test');
         }
 );
+app.post('/auth/local', passport.authenticate(
+    'local',
+    { failureRedirect: '/failed-local' }
+    ),
+    (req, res) => {
+        console.log('******** LOCAL STRATEGY SUCCESS **********');
+        res.redirect('/test');
+    }
+);
 
 app.use('/test', checkAuth, testRoute);
 app.use('/', checkNotAuth, indexRoute);

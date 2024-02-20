@@ -21,12 +21,12 @@ require('dotenv').config({
 // ====== FUNCTIONS ======
 /**
  * 
- * @param {String} email - Username
+ * @param {String} username - Username
  * @param {String} password - Password
  */
-async function addUser  (email, password) {
+async function addUser  (username, password) {
     try {
-        console.log(`Adding user: ${email}, ${password}`);
+        console.log(`Adding user: ${username}, ${password}`);
         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
         const db = mongoose.connection;
         db.on('error', () => {
@@ -34,7 +34,7 @@ async function addUser  (email, password) {
         });
         
         const newUser = new User({
-            email: email,
+            username: username,
             password: bcrypt.hashSync(password, 10),
             admin: false
         });

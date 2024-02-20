@@ -6,19 +6,40 @@
 import './App.css';
 
 // React
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Imgs
 import ripplLogo from '../assets/rippl-logo-light.png';
 import googleLogo from '../assets/google-logo.png';
+
+// Components
+import SignUpModal from './SignUpModal/SignUpModal.js';
 
 
 // ====== FUNCTIONS ======
 
 function App () {
 
+    // == VARIABLES
     
+    const [showSignUp, setShowSignUp] = useState(false);
 
+
+    // == USE EFFECT
+
+    // useEffect(() => {
+    //     console.log('Sign up modal:');
+    //     console.log(showSignUp);
+    // }, [showSignUp]);
+
+    // == FUNCTIONS
+
+    function handleSignUpClick () {
+        setShowSignUp(true);
+    }
+
+    // == RENDER
+    
     return (
         <div className='App'>
 
@@ -53,7 +74,7 @@ function App () {
                             <div className='orLine'></div>
                         </span>
                     </div>
-                    <form className='signInForm'>
+                    <form action='/auth/local' method='POST' className='signInForm'>
                         <h2>Login</h2>
                         <div className='inputWrapper'>
                             <label>Username</label>
@@ -61,19 +82,36 @@ function App () {
                         </div>
                         <div className='inputWrapper'>
                             <label>Password</label>
-                            <input name='password' type='text'/>
+                            <input name='password' type='password'/>
                         </div>
                         <div className='submitBtnWrapper'>
-                            <button type='button'>Sign In</button>
+                            <button type='submit'>Sign In</button>
                         </div>
                     </form>
                     <div className='signUpDiv'>
                         <span>No account?</span>
-                        <a href='/register'>Sign up</a>
+
+                        <a
+                            className='signUpLink'
+                            onClick={handleSignUpClick}
+                        >
+                            Sign up
+                        </a>
+
                     </div>
                 </div>
 
             </section>
+
+            { showSignUp 
+                ? 
+                    <SignUpModal
+                        setShowSignUp={setShowSignUp}
+                    /> 
+                : 
+                    ''
+            }
+
         </div>
     );
 }

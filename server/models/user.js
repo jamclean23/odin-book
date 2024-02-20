@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 // ====== DEFINITION ======
 
 const userSchema = new mongoose.Schema({
-    email: {
+    username: {
         type: String,
         required: true
     },

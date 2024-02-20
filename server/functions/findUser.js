@@ -18,9 +18,9 @@ require('dotenv').config({
 // ====== FUNCTIONS ======
 /**
  * 
- * @param {String} email - Email
+ * @param {String} username - Username
  */
-async function findUser  (email) {
+async function findUser  (username) {
     let user = {};
 
     try {
@@ -30,7 +30,7 @@ async function findUser  (email) {
             throw new Error("Mongoose Connection Error");
         });
         
-        user = await User.findOne({ "email": email });
+        user = await User.findOne({ "username": username });
         
 
     } catch (err) {

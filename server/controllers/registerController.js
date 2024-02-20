@@ -15,13 +15,15 @@ function registerPage (req, res) {
 }
 
 async function processRegister (req, res) {
-    const existingUser = await findUser(req.body.email, req.body.password);
+    console.log('Looking for existing user ...');
+    const existingUser = await findUser(req.body.username, req.body.password);
 
     if (existingUser) {
-        res.render('register', {errorMessages: { "email": "Username taken" }});
+        // Eventual server side validationn goes through this route
+        res.redirect('/name-taken');
     } else {
-        await addUser(req.body.email, req.body.password);
-        res.redirect('/login');
+        await addUser(req.body.username, req.body.password);
+        res.redirect('/');
     }
 }
 

@@ -1,0 +1,56 @@
+.SignUpModal {
+    background-color: rgba(0, 0, 0, .8);
+    backdrop-filter: blur(6px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--window-width);
+}
+
+/* Close button */
+
+.closeBtn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    border-radius: 100%;
+    border: 1px solid white;
+    background-color: transparent;
+    color: white;
+    height: 2rem;
+    width: 2rem;
+}
+
+.closeBtn:hover {
+    color: black;
+    background-color: white;
+}
+
+/* Form */
+
+.signUpForm {
+    background-color: white;
+    border-radius: 4px;
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-inline: auto;
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.signUpForm h2 {
+    margin: 0;
+    text-align: center;
+}
+
+.signUpForm input {
+    text-align: center;
+}
+
+.signUpForm .submitBtnWrapper {
+    display: flex;
+    justify-content: center;
+}

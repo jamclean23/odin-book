@@ -52,7 +52,23 @@ function initialize (passport) {
         }
     };
 
-    passport.use(new GoogleStrategy({
+    function testSignIn (username, password, done) {
+        console.log('TEST LOGIN');
+        console.log({
+            username,
+            password
+        });
+
+        const user = {
+            username,
+            password,
+            provider: 'local'
+        }
+
+        return done(null, user);
+    }
+
+    passport.use('google', new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: "http://127.0.0.1:5555/auth/google/callback"
@@ -64,9 +80,7 @@ function initialize (passport) {
     }
     ));
 
-    // passport.use(
-    //     new LocalStrategy({ usernameField: 'email' }, authenticateUser)
-    // );
+    passport.use('local', new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, /* authenticateUser */testSignIn));
 
     // passport.serializeUser((user, done) => {
     //     done(null, user.id);
@@ -85,11 +99,29 @@ function initialize (passport) {
     // })
 
     passport.serializeUser((user, done) => {
+        console.log('*********** SERIALIZING USER ******************');
+        console.log(user);
         done(null, user);
     });
 
     passport.deserializeUser((obj, done) => {
-        done(null, obj);
+        console.log('************ DESERIALIZING USER ****************');
+        console.log(obj);
+
+        if ('provider' in obj) {
+            console.log('PROVIDER:' + obj.provider);
+            if (obj.provider === 'google') {
+                done(null, obj);
+            } else if (obj.provider === 'local') {
+                done(null, obj);
+            } else {
+                console.log('PROVIDER NOT RECOGNIZED');
+                done(null, false);
+            }
+        } else {
+            console.log('NO PROVIDER SUPPLIED');
+            done(null, false);
+        }
     });
 
 }

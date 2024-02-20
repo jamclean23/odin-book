@@ -162,6 +162,15 @@
     color: white;
 }
 
+.signUpLink {
+    color: rgb(0, 112, 224);
+    text-decoration: underline;
+}
+
+.signUpLink:hover {
+    color: lightblue;
+}
+
 
 /* DESKTOP ========================*/
 @media screen and (min-width: 601px) {
