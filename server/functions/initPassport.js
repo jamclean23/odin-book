@@ -34,20 +34,26 @@ function initialize (passport) {
             user = await User.findOne({"username": username});
 
             if (user == null) {
-                return done(null, false, { message: 'No user with that name.' });
+                return done(null, false, { message: JSON.stringify({
+                    type: 'username',
+                    message: 'No user with that name'
+                }) });
             } else {
-                console.log('User found.');
+                // console.log('User found.');
             }
 
             if (await bcrypt.compare(password, user.password)) {
-                console.log('Password correct.');
+                // console.log('Password correct.');
                 const newUserObj = Object.assign({ provider: 'local'}, user);
-                console.log('AFTER ASSIGNING PROVIDER:');
-                console.log(newUserObj);
+                // console.log('AFTER ASSIGNING PROVIDER:')
+                // console.log(newUserObj);
                 return done(null, newUserObj);
             } else {
-                console.log('Password incorrect');
-                return done(null, false, { message: 'Incorrect password' });
+                // console.log('Password incorrect');
+                return done(null, false, { message: JSON.stringify({
+                    type: 'password',
+                    message: 'Incorrect password'
+                }) });
             }
         } catch (err) {
             console.log(err);
@@ -77,7 +83,7 @@ function initialize (passport) {
         callbackURL: "http://127.0.0.1:5555/auth/google/callback"
     },
     (accessToken, refreshToken, profile, done) => {
-        console.log('USING GOOGLE STRATEGY');
+        // console.log('USING GOOGLE STRATEGY');
         profile;
         return done(null, profile);
     }
@@ -102,27 +108,27 @@ function initialize (passport) {
     // })
 
     passport.serializeUser((user, done) => {
-        console.log('*********** SERIALIZING USER ******************');
-        console.log(user);
+        // console.log('*********** SERIALIZING USER ******************');
+        // console.log(user);
         done(null, user);
     });
 
     passport.deserializeUser((obj, done) => {
-        console.log('************ DESERIALIZING USER ****************');
-        console.log(obj);
+        // console.log('************ DESERIALIZING USER ****************');
+        // console.log(obj);
 
         if ('provider' in obj) {
-            console.log('PROVIDER:' + obj.provider);
+            // console.log('PROVIDER:' + obj.provider);
             if (obj.provider === 'google') {
                 done(null, obj);
             } else if (obj.provider === 'local') {
                 done(null, obj);
             } else {
-                console.log('PROVIDER NOT RECOGNIZED');
+                // console.log('PROVIDER NOT RECOGNIZED');
                 done(null, false);
             }
         } else {
-            console.log('NO PROVIDER SUPPLIED');
+            // console.log('NO PROVIDER SUPPLIED');
             done(null, false);
         }
     });

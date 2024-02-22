@@ -35,6 +35,7 @@ const registerRoute = require('./routes/registerRoute.js');
 const fourOhFourRoute = require('./routes/fourOhFourRoute.js');
 const logoutRoute = require('./routes/logoutRoute.js');
 const testRoute = require('./routes/testRoute.js');
+const authRoute = require('./routes/authRoute.js').init(passport);
 
 // ====== GLOBAL VARS / INIT ======
 
@@ -62,30 +63,8 @@ app.use(passport.session());
 
 // ====== ROUTES ======
 
-app.use('/login', checkNotAuth, loginRoute);
-app.use('/register', checkNotAuth, registerRoute);
+app.use('/auth', authRoute);
 app.use('/logout', checkAuth, logoutRoute);
-
-// GOOGLE SIGN IN
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email']}));
-app.get('/auth/google/callback', 
-    passport.authenticate(
-        'google',
-        { failureRedirect: '/error' }),
-        (req, res) => {
-            // Successful authentication, redirect success.
-            res.redirect('/test');
-        }
-);
-app.post('/auth/local', passport.authenticate(
-    'local',
-    { failureRedirect: '/failed-local' }
-    ),
-    (req, res) => {
-        console.log('******** LOCAL STRATEGY SUCCESS **********');
-        res.redirect('/test');
-    }
-);
 
 app.use('/test', checkAuth, testRoute);
 app.use('/', checkNotAuth, indexRoute);

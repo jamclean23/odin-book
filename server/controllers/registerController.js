@@ -19,7 +19,7 @@ async function processRegister (req, res) {
     const existingUser = await findUser(req.body.username, req.body.password);
 
     if (existingUser) {
-        // Eventual server side validationn goes through this route
+        // Eventual server side validation goes through this route
         res.redirect('/name-taken');
     } else {
         await addUser(req.body.username, req.body.password);

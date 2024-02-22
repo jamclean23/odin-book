@@ -9,7 +9,11 @@
 </head>
 
 <body>
-    <div id="reactEntry"></div>
+
+    <div
+        data-loginerr="<%if (locals.loginErr){%><%=locals.loginErr%><%}%>"
+        id="reactEntry">
+    </div>
 </body>
 
 </html>

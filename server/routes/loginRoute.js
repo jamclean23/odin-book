@@ -19,7 +19,7 @@ const controller = require('../controllers/loginController');
 
 function init (passport) {
     router.get('/', (req, res, next) => {console.log('LOGIN ROUTE'); next()}, controller.loginPage);
-    router.post('/', sanitizeBody, handleSanitizeErrors('login'), passport.authenticate('local', {
+    router.post('/', sanitizeBody, handleSanitizeErrors('index'), passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/login'
     }));

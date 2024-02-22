@@ -26,7 +26,7 @@ function SignUpModal (props) {
 
         <button onClick={handleCloseBtnClick} className='closeBtn'>X</button>
 
-        <form action='/register' method='POST' className='signUpForm'>
+        <form action='auth/local/register' method='POST' className='signUpForm'>
 
             <h2>Register</h2>
 

@@ -1,5 +1,10 @@
 /* COMMON =============================== */
 
+.App {
+    height: var(--window-height);
+    width: var(--window-width);
+    overflow: hidden;
+}
 
 /* RippL header */
 .ripplHeader {
@@ -122,12 +127,12 @@
 .signInForm {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     border: 1px solid rgba(255, 255, 255, .3);
     padding-inline: 2rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
     color: white;
+    gap: .5rem;
 }
 .signInForm h2 {
     margin: 0;
@@ -135,12 +140,14 @@
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, .3);
     padding-bottom: .5rem;
+    margin-bottom: 1rem;
 }
 .inputWrapper {
     display: flex;
     flex-direction: column;
     gap: .5rem;
 }
+
 .inputWrapper label {
     text-align: center;
 }
@@ -169,6 +176,17 @@
 
 .signUpLink:hover {
     color: lightblue;
+}
+
+.errorSpan {
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid red;
+    min-height: 1rem;
+}
+
+.emptyErrorSpan {
+    min-height: 1rem;
 }
 
 

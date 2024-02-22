@@ -14,10 +14,11 @@ import App from './react/App';
 
 // Functions
 import initEventListeners from '../functions/initEventListeners.js';
-
+import replaceUrl from '../functions/replaceUrl.js';
 
 // ====== RENDER/MAIN ======
 
+replaceUrl();
 
 initEventListeners();
 

@@ -23,7 +23,7 @@ function App () {
     // == VARIABLES
     
     const [showSignUp, setShowSignUp] = useState(false);
-
+    const [loginErr, setLoginErr] = useState(getLoginErr());
 
     // == USE EFFECT
 
@@ -33,6 +33,16 @@ function App () {
     // }, [showSignUp]);
 
     // == FUNCTIONS
+
+    function getLoginErr () {
+        const reactEntryEl = document.querySelector('#reactEntry');
+        let loginErr = '';
+        try {
+            loginErr = JSON.parse(reactEntryEl.getAttribute('data-loginErr'));
+        } catch (err) {
+        }
+        return loginErr;
+    }
 
     function handleSignUpClick () {
         setShowSignUp(true);
@@ -74,15 +84,23 @@ function App () {
                             <div className='orLine'></div>
                         </span>
                     </div>
-                    <form action='/auth/local' method='POST' className='signInForm'>
+                    <form action='/auth/local/login' method='POST' className='signInForm'>
                         <h2>Login</h2>
                         <div className='inputWrapper'>
                             <label>Username</label>
                             <input name='username' type='text'/>
+                            {loginErr && loginErr.type === 'username'
+                                ? <span className='errorSpan'>{loginErr.message}</span>
+                                : <span className='emptyErrorSpan'></span>
+                            }
                         </div>
-                        <div className='inputWrapper'>
+                        <div className='inputWrapper passwordWrapper'>
                             <label>Password</label>
                             <input name='password' type='password'/>
+                            {loginErr && loginErr.type === 'password'
+                                ? <span className='errorSpan'>{loginErr.message}</span>
+                                : <span className='emptyErrorSpan'></span>
+                            }
                         </div>
                         <div className='submitBtnWrapper'>
                             <button type='submit'>Sign In</button>
