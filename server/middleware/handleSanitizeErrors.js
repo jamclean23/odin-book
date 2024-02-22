@@ -5,6 +5,8 @@
 
 const { validationResult } = require('express-validator');
 
+// Controllers
+const indexController = require('../controllers/indexController.js');
 
 // ====== FUNCTIONS ======
 
@@ -27,7 +29,10 @@ function handleSanitizeErrors (failureRoute) {
 
         if (!errors.isEmpty()) {
             if (failureRoute) {
-                res.render(failureRoute, {errorMessages});
+                indexController.indexPage(req, res, { "registerErr": JSON.stringify({
+                    type: 'password err',
+                    message: 'Password invalid'
+                })});
             }
         } else {
             next();

@@ -38,6 +38,10 @@ function SignUpModal (props) {
                     placeholder='Choose a unique username'
                     type='text'
                 />
+                {props.registerErr && props.registerErr.type === 'username taken'
+                    ? <span className='registerErrSpan'>{props.registerErr.message}</span>
+                    : <span className='emptyRegisterErrSpan'></span>
+                }
             </div>
 
             <div className='inputWrapper passwordInputWrapper'>
@@ -47,6 +51,10 @@ function SignUpModal (props) {
                     className='passwordInput'
                     type='password'
                 />
+                {props.registerErr && props.registerErr.type === 'password err'
+                    ? <span className='registerErrSpan'>{props.registerErr.message}</span>
+                    : <span className='emptyRegisterErrSpan'></span>
+                }                
             </div>
             
             <div className='submitBtnWrapper'>

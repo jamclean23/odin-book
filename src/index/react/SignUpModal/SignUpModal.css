@@ -54,3 +54,15 @@
     display: flex;
     justify-content: center;
 }
+
+.registerErrSpan {
+    min-height: 1rem;
+    border-radius:  4px;
+    border: 1px solid red;
+    text-align: center;
+}
+
+.emptyRegisterErrSpan {
+    min-height: 1rem;
+}
+

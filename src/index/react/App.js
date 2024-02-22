@@ -6,7 +6,7 @@
 import './App.css';
 
 // React
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // Imgs
 import ripplLogo from '../assets/rippl-logo-light.png';
@@ -22,10 +22,24 @@ function App () {
 
     // == VARIABLES
     
+    const renderCount = useRef(0);
+
     const [showSignUp, setShowSignUp] = useState(false);
     const [loginErr, setLoginErr] = useState(getLoginErr());
 
+    const registerErr = getRegisterErr();
+
     // == USE EFFECT
+
+    useEffect(() => {
+        if (renderCount.current === 0) {
+            if (registerErr) {
+                setShowSignUp(true);
+            }
+        }
+
+        renderCount.current = renderCount.current + 1;
+    }, []);
 
     // useEffect(() => {
     //     console.log('Sign up modal:');
@@ -33,6 +47,16 @@ function App () {
     // }, [showSignUp]);
 
     // == FUNCTIONS
+
+    function getRegisterErr () {
+        const reactEntryEl = document.querySelector('#reactEntry');
+        let registerErr = '';
+        try {
+            registerErr = JSON.parse(reactEntryEl.getAttribute('data-registerErr'));
+        } catch (err) {
+        }
+        return registerErr;
+    }
 
     function getLoginErr () {
         const reactEntryEl = document.querySelector('#reactEntry');
@@ -124,6 +148,7 @@ function App () {
             { showSignUp 
                 ? 
                     <SignUpModal
+                        registerErr={registerErr}
                         setShowSignUp={setShowSignUp}
                     /> 
                 : 

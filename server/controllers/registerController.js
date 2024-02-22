@@ -7,6 +7,9 @@
 const addUser = require('../functions/addUser.js');
 const findUser = require('../functions/findUser.js');
 
+// External controllers
+const indexController = require('../controllers/indexController.js');
+
 
 // ====== FUNCTIONS ======
 
@@ -19,8 +22,20 @@ async function processRegister (req, res) {
     const existingUser = await findUser(req.body.username, req.body.password);
 
     if (existingUser) {
-        // Eventual server side validation goes through this route
-        res.redirect('/name-taken');
+        indexController.indexPage(req, res, { "registerErr": JSON.stringify({
+            type: 'username taken',
+            message: 'Username not available'
+        })});
+    } else if (!req.body.username){
+        indexController.indexPage(req, res, { "registerErr": JSON.stringify({
+            type: 'username taken',
+            message: 'Username not valid'
+        })});
+    } else if (!req.body.password) {
+        indexController.indexPage(req, res, { "registerErr": JSON.stringify({
+            type: 'password err',
+            message: 'Password invalid'
+        })});
     } else {
         await addUser(req.body.username, req.body.password);
         res.redirect('/');
