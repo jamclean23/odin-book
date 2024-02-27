@@ -5,10 +5,14 @@
 
 function checkAuth (req, res, next) {
     if (req.isAuthenticated()) {
-        // console.log('---------- Authenticated ---------------');
-        res.redirect('/test');
+        // console.log('---------- Check Not Auth Authenticated ---------------');
+        if (req.path === '/') {
+            res.redirect('/fourOhFour');
+            return;
+        }
+        res.redirect('/');
     } else {
-        // console.log('---------- Not Authenticated ---------------');
+        // console.log('---------- Check Not Auth Not Authenticated ---------------');
         return next();
     }
 }

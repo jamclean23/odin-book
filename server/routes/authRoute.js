@@ -10,12 +10,14 @@ const router = express.Router();
 const sanitizeLoginBody = require('../middleware/login/sanitizeLoginBody.js');
 const sanitizeRegisterBody = require('../middleware/register/sanitizeRegisterBody.js');
 const checkNotAuth = require('../middleware/checkNotAuth.js');
+const checkAuth = require('../middleware/checkAuth.js');
 
 // Routes
 const registerRoute = require('../routes/registerRoute.js');
 
 // Controllers
 const indexController = require('../controllers/indexController.js');
+const authController = require('../controllers/authController.js');
 
 // ====== ROUTING ======
 
@@ -28,10 +30,12 @@ function init (passport) {
             { failureRedirect: '/' }),
             (req, res) => {
                 // Successful authentication, redirect success.
-                res.redirect('/test');
+                res.redirect('/auth/google/login');
             }
     );
     
+    router.get('/google/login', checkAuth, authController.googleLogin);
+    router.get('/google/register', checkAuth, authController.googleRegister);
 
     // MOVE TO LOGIN CONTROLLER, ADD RENDERING MAIN WITH OPTION MESSAGES
     router.post('/local/login',

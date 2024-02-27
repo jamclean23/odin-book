@@ -1,4 +1,4 @@
-// Find a local users document in the database
+// Add a google user's document to the database
 
 // ====== IMPORTS ======
 
@@ -19,32 +19,30 @@ require('dotenv').config({
 /**
  * 
  * @param {String} username - Username
+ * @param {String} password - Password
  */
-async function findUser  (username) {
-    let user = {};
-
+async function addGoogleUser  (username) {
     try {
+        console.log(`Adding google user: ${username}`);
         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
         const db = mongoose.connection;
         db.on('error', () => {
             throw new Error("Mongoose Connection Error");
         });
         
-        user = await User.findOne({ "username": username });
-        
+        const newUser = new User({
+            username: username,
+            admin: false
+        });
+
+        await newUser.save();
 
     } catch (err) {
         console.log(err);
-    }
-
-    if (user) {
-        return user;
-    } else {
-        return null;
     }
 }
 
 
 // ====== EXPORTS ======
 
-module.exports = findUser;
+module.exports = addGoogleUser;

@@ -67,8 +67,9 @@ app.use('/auth', authRoute);
 app.use('/logout', checkAuth, logoutRoute);
 
 app.use('/test', checkAuth, testRoute);
+app.use('/fourOhFour', fourOhFourRoute);
 app.use('/', checkNotAuth, indexRoute);
-app.use(fourOhFourRoute);
+app.use('/*', fourOhFourRoute);
 
 
 // ====== EXPORTS ======

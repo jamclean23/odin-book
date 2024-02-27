@@ -1,4 +1,4 @@
-// Add a users document to the database
+// Add a user's document to the database
 
 // ====== IMPORTS ======
 

@@ -116,7 +116,6 @@ function initialize (passport) {
     passport.deserializeUser((obj, done) => {
         // console.log('************ DESERIALIZING USER ****************');
         // console.log(obj);
-
         if ('provider' in obj) {
             // console.log('PROVIDER:' + obj.provider);
             if (obj.provider === 'google') {
