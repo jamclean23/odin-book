@@ -5,14 +5,18 @@
 // React
 import React from 'react';
 
+// Components
+import SmallHeader from '../../components/SmallHeader/SmallHeader';
 
 // ====== FUNCTIONS ======
 
 function App (props) {
     // == RENDER
-    return (<div className='App'>
-
-    </div>);
+    return (
+        <div className='App'>
+            <SmallHeader />
+        </div>
+    );
 }
 
 

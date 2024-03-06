@@ -1,0 +1,40 @@
+/* Styling for SmallHeader component */
+
+:root {
+    --window-height: 100vh;
+    --window-width: 100vw;
+    --dark-gray: #252633;
+}
+
+.SmallHeader {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--dark-gray);
+    box-shadow: 0 0 6px var(--dark-gray);
+}
+
+.SmallHeader .logo {
+    height: 3.2rem;
+}
+
+.SmallHeader .logoWrapper {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.SmallHeader .logoWrapper h1 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+
+/* DESKTOP ========================*/
+@media screen and (min-width: 601px) {
+
+}
+
+/* MOBILE ==========================*/
+@media screen and (max-width: 600px) {
+    
+}

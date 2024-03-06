@@ -9,7 +9,8 @@
 }
 
 html {
-    background-color: var(--dark-gray);
+    background-image: url('../assets/water.png');
+    background-size: 20%;
 }
 
 body {
