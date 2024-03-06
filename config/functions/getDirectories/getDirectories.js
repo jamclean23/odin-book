@@ -22,7 +22,7 @@ function getDirectories (path) {
             .filter((dir) => {
                 console.log(dir);
                 // EXCLUDE DIRECTORIES HERE
-                return dir.isDirectory() && !(dir.name === 'functions') && !(dir.name === 'assets');
+                return dir.isDirectory() && !(dir.name === 'functions') && !(dir.name === 'assets') && !(dir.name === 'components');
             })
             .map((dir) => dir.name);
         return directories;
