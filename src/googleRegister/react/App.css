@@ -1,0 +1,58 @@
+/* Styling foor googleRegister App component */
+
+main {
+    height: calc(var(--window-height) - var(--header-height));
+    display: flex;
+    overflow: auto;
+}
+
+.registerForm {
+    margin: auto;
+    color: white;
+    background-color: var(--dark-gray);
+    box-shadow: 0 0 6px var(--dark-gray);
+    border-radius: 6px;
+    padding-inline: 4rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 30rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.registerForm h2 {
+    text-align: center;
+    margin: 0;
+}
+
+.registerForm p {
+    margin: 0;
+}
+
+.inputWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.submitBtnWrapper {
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    text-align: center;
+}
+
+.usernameErrSpan {
+    border: 1px solid red;
+    min-height: 1.5rem;
+    padding-inline: .5rem;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+}

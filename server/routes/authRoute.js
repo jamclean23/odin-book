@@ -22,6 +22,13 @@ const authController = require('../controllers/authController.js');
 // ====== ROUTING ======
 
 function init (passport) {
+
+    // == COMMON
+
+    router.post('/validateUsername', authController.validateUsername);
+
+    // == GOOGLE
+
     router.get('/google', passport.authenticate('google', { scope: ['profile', 'email']}));
 
     router.get('/google/callback',
@@ -36,6 +43,8 @@ function init (passport) {
     
     router.get('/google/login', checkAuth, authController.googleLogin);
     router.get('/google/register', checkAuth, authController.googleRegister);
+
+    // == LOCAL
 
     // MOVE TO LOGIN CONTROLLER, ADD RENDERING MAIN WITH OPTION MESSAGES
     router.post('/local/login',

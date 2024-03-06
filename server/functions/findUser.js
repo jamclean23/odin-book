@@ -25,10 +25,12 @@ async function findUser  (username) {
 
     try {
         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
-        const db = mongoose.connection;
-        db.on('error', () => {
-            throw new Error("Mongoose Connection Error");
-        });
+
+        // This error handling causes max listeners to be exceeded
+        // const db = mongoose.connection;
+        // db.on('error', () => {
+        //     throw new Error("Mongoose Connection Error");
+        // });
         
         user = await User.findOne({ "username": username });
         

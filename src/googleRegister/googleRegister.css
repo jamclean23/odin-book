@@ -1,6 +1,7 @@
 :root {
     --window-height: 100vh;
     --window-width: 100vw;
+    --header-height: 5rem;
     --dark-gray: #252633;
 }
 
