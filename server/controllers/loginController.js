@@ -8,7 +8,7 @@ function loginPage (req, res) {
 }
 
 function processLogin (req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     res.redirect('/');
 }
 

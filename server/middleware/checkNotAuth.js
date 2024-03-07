@@ -3,13 +3,17 @@
 
 // ====== FUNCTIONS ======
 
-function checkAuth (req, res, next) {
+function checkNotAuth (req, res, next) {
     if (req.isAuthenticated()) {
         // console.log('---------- Check Not Auth Authenticated ---------------');
+
         if (req.path === '/') {
-            res.redirect('/fourOhFour');
+            console.log('Requested index, cannot access. Redirecting to pond');
+            res.redirect('/pond');
             return;
         }
+
+        console.log('Redirecting to index');
         res.redirect('/');
     } else {
         // console.log('---------- Check Not Auth Not Authenticated ---------------');
@@ -20,4 +24,4 @@ function checkAuth (req, res, next) {
 
 // ====== EXPORTS ======
 
-module.exports = checkAuth;
+module.exports = checkNotAuth;

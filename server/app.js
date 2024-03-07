@@ -36,6 +36,7 @@ const fourOhFourRoute = require('./routes/fourOhFourRoute.js');
 const logoutRoute = require('./routes/logoutRoute.js');
 const testRoute = require('./routes/testRoute.js');
 const authRoute = require('./routes/authRoute.js').init(passport);
+const pondRoute = require('./routes/pondRoute.js');
 
 // ====== GLOBAL VARS / INIT ======
 
@@ -65,7 +66,7 @@ app.use(passport.session());
 
 app.use('/auth', authRoute);
 app.use('/logout', checkAuth, logoutRoute);
-
+app.use('/pond', checkAuth, pondRoute);
 app.use('/test', checkAuth, testRoute);
 app.use('/fourOhFour', fourOhFourRoute);
 app.use('/', checkNotAuth, indexRoute);

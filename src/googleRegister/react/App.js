@@ -39,20 +39,73 @@ function App (props) {
         const currentUser = username.current;
 
         // Check if username is valid
-        await checkUsername(currentUser);
+        let result = { valid: false };
+
+        try {
+            result = await checkUsernameBeforeSubmit(currentUser);
+        } catch (err) {
+            console.log(err);
+        }
 
         // If valid, submit to server
-        // TEST SLEEP
-        await (() => {
-            return new Promise((resolve) => {
-                setTimeout(resolve, 3000);
-            });
-        })();
+        if (result.valid) {
+            // TEST SLEEP
+            // const result = await (() => {
+            //     return new Promise((resolve) => {
+            //         function lambda () {
+            //             resolve('ok');
+            //         }
+            //         setTimeout(lambda, 3000);
+            //     });
+            // })();
 
-        // If server responds ok then account is added, redirect to user homepage
-        
-        // If server responds error the account is not added, set submit button to default
+            let result = { result: '' };
+
+            try {
+
+                const response = await fetch('/auth/google/addUser', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username: currentUser })
+                });
+                result = await response.json();
+            } catch (err) {
+                console.log('Error occured in adding user');
+                console.log(err);
+            }
+                
+            // If server responds ok then account is added, redirect to user homepage
+            if (result.result === 'ok') {
+                window.location.href = '/pond/' + currentUser;
+            }
+        }
+
+        // If page has not been redirected then account was not added. Set submit button to default
         setProcessing(false);
+    }
+
+    async function checkUsernameBeforeSubmit (toCheck) {
+
+        let result = { valid: false };
+
+        try {
+
+            const response = await fetch('/auth/validateUsername', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username: toCheck })
+            });
+            result = await response.json();
+
+        } catch (err) {
+            console.log(err);
+        }
+
+        return result;
     }
 
     async function checkUsername (toCheck) {
@@ -112,7 +165,7 @@ function App (props) {
         <div className='App'>
             <SmallHeader />
             <main>
-                <form className='registerForm'>
+                <div className='registerForm'>
 
                     <h2>Register</h2>
 
@@ -150,7 +203,7 @@ function App (props) {
 
                     </div>
 
-                </form>
+                </div>
             </main>
         </div>
     );

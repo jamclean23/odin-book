@@ -18,7 +18,7 @@ function registerPage (req, res) {
 }
 
 async function processRegister (req, res) {
-    console.log('Looking for existing user ...');
+    // console.log('Looking for existing user ...');
     const existingUser = await findUser(req.body.username, req.body.password);
 
     if (existingUser) {

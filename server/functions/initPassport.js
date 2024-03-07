@@ -61,22 +61,6 @@ function initialize (passport) {
         }
     };
 
-    function testSignIn (username, password, done) {
-        console.log('TEST LOGIN');
-        console.log({
-            username,
-            password
-        });
-
-        const user = {
-            username,
-            password,
-            provider: 'local'
-        }
-
-        return done(null, user);
-    }
-
     passport.use('google', new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -90,22 +74,6 @@ function initialize (passport) {
     ));
 
     passport.use('local', new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, authenticateUser /*testSignIn*/));
-
-    // passport.serializeUser((user, done) => {
-    //     done(null, user.id);
-    // });
-
-    // passport.deserializeUser(async (id, done) => {
-    //     let user;
-    //     try {
-    //         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
-    //         user = await User.findById(id);
-    //         done(null, user);
-    //     } catch (err) {
-    //         console.log(err);
-    //         done('pass');
-    //     }
-    // })
 
     passport.serializeUser((user, done) => {
         // console.log('*********** SERIALIZING USER ******************');

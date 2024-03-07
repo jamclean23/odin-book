@@ -8,7 +8,7 @@ function testIndexRoute (req, res) {
 }
 
 function indexPage (req, res, paramsObj = {}) {
-    console.log(paramsObj);
+    // console.log(paramsObj);
     res.render('index', paramsObj);
 }
 

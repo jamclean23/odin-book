@@ -26,10 +26,13 @@ function init (passport) {
     // == COMMON
 
     router.post('/validateUsername', authController.validateUsername);
-
+    router.get('/logout', authController.logout);
     // == GOOGLE
 
-    router.get('/google', passport.authenticate('google', { scope: ['profile', 'email']}));
+    router.get('/google', passport.authenticate('google', {
+        scope: ['profile', 'email'],
+        prompt : "select_account"
+    }));
 
     router.get('/google/callback',
         passport.authenticate(
@@ -43,6 +46,7 @@ function init (passport) {
     
     router.get('/google/login', checkAuth, authController.googleLogin);
     router.get('/google/register', checkAuth, authController.googleRegister);
+    router.post('/google/addUser',checkAuth, authController.googleAddUser);
 
     // == LOCAL
 
@@ -64,7 +68,7 @@ function init (passport) {
                         console.log(err);
                         res.render('index', { errors: [err] });
                     } else {
-                        res.redirect('/test');
+                        res.redirect('/pond/' + user._doc.username);
                     }
                 });
             } else {

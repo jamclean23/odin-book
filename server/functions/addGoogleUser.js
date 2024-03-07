@@ -21,24 +21,31 @@ require('dotenv').config({
  * @param {String} username - Username
  * @param {String} password - Password
  */
-async function addGoogleUser  (username) {
+async function addGoogleUser  (username, googleId) {
+    if (!username || !googleId) {
+        throw new Error('Username or googleId error');
+    }
     try {
         console.log(`Adding google user: ${username}`);
         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
         const db = mongoose.connection;
-        db.on('error', () => {
-            throw new Error("Mongoose Connection Error");
-        });
+
+        // This error handling causes max listeners to overflow
+        // db.on('error', () => {
+        //     throw new Error("Mongoose Connection Error");
+        // });
         
         const newUser = new User({
             username: username,
-            admin: false
+            admin: false,
+            googleId: googleId
         });
 
         await newUser.save();
 
     } catch (err) {
         console.log(err);
+        throw new Error('Error adding user');
     }
 }
 
