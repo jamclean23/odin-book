@@ -2,8 +2,10 @@
 
 // ====== IMPORTS ======
 
+// Functions
 const findGoogleUser = require('../functions/findGoogleUser.js');
 const findUser = require('../functions/findUser.js');
+const valUsername = require('../functions/valUsername.js');
 
 // ====== FUNCTIONS ======
 
@@ -42,44 +44,13 @@ async function googleRegister (req, res) {
 
 async function validateUsername (req, res) {
     const username = req.body.username;
-    let valid = false;
-    let msg = '';
-
-    let existingUser;
-
+    let result = {};
     try {
-        existingUser = await findUser(username);
+        result = await valUsername(username);
     } catch (err) {
         console.log(err);
-        res.json({
-            valid: false,
-            msg: 'Error looking up users',
-            checkedUser: username
-        });
-        return;
     }
-
-    validCharsRegex = /[\s\S]*[\W\s_][\s\S]*/;
-
-    if (username == '') {
-        msg = 'Please enter a username';
-    } else if (validCharsRegex.test(username)) {
-        msg = 'Username may not contain special characters or spaces';
-    } else if (username.length < 8) {
-        msg = 'Must be at least 8 characters';
-    } else if (username.length > 15) {
-        msg = 'Must be fewer than 15 character';
-    } else if (!existingUser) {
-        valid = true;
-    } else {
-        msg = 'Username taken';
-    }
-
-    res.json({
-        valid,
-        msg,
-        checkedUser: username
-    })
+    res.json(result);
 }
 
 // ====== EXPORTS ======

@@ -42,6 +42,7 @@ main {
 .submitBtnWrapper {
     display: flex;
     justify-content: center;
+    height: 1.5rem;
 }
 
 input {
@@ -55,4 +56,22 @@ input {
     display: flex;
     align-items: center;
     opacity: 0;
+}
+
+ul {
+    margin: 0;
+}
+
+.loadIcon {
+    height: 1.2rem;
+    animation-name: spin;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(1turn);
+    }
 }

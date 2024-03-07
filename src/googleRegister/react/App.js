@@ -8,6 +8,9 @@ import React, { useState, useEffect, useRef } from 'react';
 // Styling
 import './App.css';
 
+// Images
+import loadIcon from '../../assets/load-icon.png';
+
 // Components
 import SmallHeader from '../../components/SmallHeader/SmallHeader';
 
@@ -18,9 +21,39 @@ function App (props) {
     // == STATE
 
     const username = useRef('');
+    const [processing, setProcessing] = useState(false);
+    const [userInvalid, setUserInvalid] = useState(true);
 
+    // == USE EFFECT
+
+    // Submit Processing
+    useEffect(() => {
+        if (processing) {
+            processSubmit();
+        }
+    }, [processing]);
 
     // == FUNCTIONS
+
+    async function processSubmit () {
+        const currentUser = username.current;
+
+        // Check if username is valid
+        await checkUsername(currentUser);
+
+        // If valid, submit to server
+        // TEST SLEEP
+        await (() => {
+            return new Promise((resolve) => {
+                setTimeout(resolve, 3000);
+            });
+        })();
+
+        // If server responds ok then account is added, redirect to user homepage
+        
+        // If server responds error the account is not added, set submit button to default
+        setProcessing(false);
+    }
 
     async function checkUsername (toCheck) {
 
@@ -43,6 +76,7 @@ function App (props) {
 
         if (result && toCheck == username.current) {
             console.log(result);
+            setUserInvalid(!result.valid);
             displayUserErrMsg(result.msg);
         }
     }
@@ -67,6 +101,11 @@ function App (props) {
         checkUsername(event.target.value);
     }
 
+    async function handleSubmit () {
+        // Start Processing request
+        setProcessing(true);
+    }
+
     // == RENDER
     
     return (
@@ -78,7 +117,11 @@ function App (props) {
                     <h2>Register</h2>
 
                     <p>You've successfully logged in with Google! Choose a RippL Username to continue.</p>
-
+                    <ul>
+                        <li>At least 8 characters</li>
+                        <li>Fewer than 15 characters</li>
+                        <li>No special characters or spaces</li>
+                    </ul>
                     <div className='inputWrapper'>
                         <label>Username</label>
                         <input
@@ -89,14 +132,21 @@ function App (props) {
                     </div>
 
                     <div className='submitBtnWrapper'>
+                        {(() => {
+                            if (processing) {
+                                return <img className='loadIcon' src={loadIcon}/>
+                            } else {
+                                return <button
+                                    className='submitBtn'
+                                    type='button'
+                                    disabled={userInvalid}
+                                    onClick={handleSubmit}
+                                >
+                                    Submit
+                                </button>                                
+                            }
+                        })()}
 
-                        <button
-                            className='submitBtn'
-                            type='button'
-                            disabled
-                        >
-                            Submit
-                        </button>
 
                     </div>
 
