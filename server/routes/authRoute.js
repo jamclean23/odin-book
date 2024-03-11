@@ -68,7 +68,7 @@ function init (passport) {
                         console.log(err);
                         res.render('index', { errors: [err] });
                     } else {
-                        res.redirect('/pond/' + user._doc.username);
+                        res.redirect('/pond');
                     }
                 });
             } else {
@@ -78,20 +78,7 @@ function init (passport) {
                 // res.render('index', {error: options.message});
             }
         })(req, res);
-    }
-);
-
-    // router.post('/local/login',
-    //     sanitizeLoginBody,
-    //     passport.authenticate(
-    //         'local',
-    //         { failureRedirect: '/' }
-    //     ),
-    //     (req, res) => {
-    //         // console.log('******** LOCAL STRATEGY SUCCESS **********');
-    //         res.redirect('/test');
-    //     }
-    // );
+    });
 
     router.use('/local/register', checkNotAuth, registerRoute);
 

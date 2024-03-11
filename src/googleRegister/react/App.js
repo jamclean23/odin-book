@@ -128,7 +128,7 @@ function App (props) {
         }
 
         if (result && toCheck == username.current) {
-            console.log(result);
+            // console.log(result);
             setUserInvalid(!result.valid);
             displayUserErrMsg(result.msg);
         }

@@ -15,9 +15,8 @@ const controller = require('../controllers/pondController.js');
 
 // ====== ROUTES ======
 
-router.use('/:user', checkAuth, controller.page);
-router.use('/*', checkAuth, controller.page);
-
+router.use('/:username', checkAuth, controller.page);
+router.use('*', checkAuth, controller.page);
 
 // ====== EXPORTS ======
 

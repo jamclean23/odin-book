@@ -13,7 +13,6 @@ const valUsername = require('../functions/valUsername.js');
 
 async function googleLogin (req, res) {
     // console.log('Looking up google user ...');
-    console.dir(req.user);
     let user = null;
     try {
         user = await findGoogleUser(req.user.id);
@@ -22,7 +21,7 @@ async function googleLogin (req, res) {
 
     if (user) {
         // User found, redirect with found user info
-        res.redirect('/pond/' + user.username);
+        res.redirect('/pond');
     } else {
         // No user found, redirect to create google account
         res.redirect('/auth/google/register');
