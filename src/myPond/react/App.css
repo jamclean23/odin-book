@@ -1,0 +1,20 @@
+.App {
+    height: var(--window-height);
+    width: var(--window-width);
+    background-image: url('../../assets/pond.png');
+    background-size: 5rem;
+}
+
+main {
+    width: var(--window-width);
+    height: calc(var(--window-height) - var(--header-height));
+    display: flex;
+}
+
+.pondDiv {
+    margin: auto;
+    min-height: 5rem;
+    min-width: 10rem;
+    border-radius: 6px;
+    background-color: var(--dark-gray);
+}

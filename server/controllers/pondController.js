@@ -33,15 +33,10 @@ async function page (req, res) {
             break;
     }
 
-    console.log('USER:');
-    console.log(user.username);
-    console.log('POND USER:');
-    console.log(pondUser);
-
     if (user.username === pondUser || !pondUser) {
-        res.send('<p>HOME</p>');
+        res.render('myPond');
     } else {
-        res.send('<p>VISITING</p>');
+        res.render('pond');
     }
 
 
