@@ -10,7 +10,7 @@
     display: flex;
     justify-content: space-between;
     background-color: var(--dark-gray);
-    box-shadow: 0 0 6px var(--dark-gray);
+    box-shadow: 0 0 6px var(black);
 }
 
 .SmallHeader .logo {

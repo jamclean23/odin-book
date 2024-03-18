@@ -28,10 +28,12 @@ async function addUser  (username, password) {
     try {
         console.log(`Adding user: ${username}, ${password}`);
         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
-        const db = mongoose.connection;
-        db.on('error', () => {
-            throw new Error("Mongoose Connection Error");
-        });
+        
+        // Error handling cuases trace errors
+        // const db = mongoose.connection;
+        // db.on('error', () => {
+        //     throw new Error("Mongoose Connection Error");
+        // });
         
         const newUser = new User({
             username: username,

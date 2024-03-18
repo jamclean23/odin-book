@@ -2,9 +2,14 @@
 
 // ====== IMPORTS ======
 
+// System
+const fs = require('fs');
+
 // Functions
 const findUser = require('../functions/findUser');
 const findGoogleUser = require('../functions/findGoogleUser');
+const findPondByUserId = require('../functions/findPondByUserId');
+const addPond = require('../functions/addPond.js');
 
 
 // ====== FUNCTIONS ======
@@ -33,17 +38,65 @@ async function page (req, res) {
             break;
     }
 
-    if (user.username === pondUser || !pondUser) {
-        res.render('myPond');
-    } else {
-        res.render('pond');
+    if (!user) {
+        req.logout((err) => {
+            res.redirect('/');
+            return;
+        });
     }
 
 
+
+    if (user.username === pondUser || !pondUser) {
+        let pond;
+        try {
+            pond = await findPondByUserId(user.id);
+
+            // If user doesn't have a pond, then create one
+            if (!pond) {
+                pond = await addPond(user.id);
+            }
+        } catch (err) {
+            console.log(err);
+            req.logout((err) => {
+                res.redirect('/');
+                return;
+            });
+        }
+
+        res.render('myPond', {pond: pond});
+    } else {
+        // Get pond object for pondUser
+
+        res.render('pond');
+    }
+}
+
+async function uploadCover (req, res) {
+    const buffer = Buffer.from(req.body, 'binary');
+    const base64Img = buffer.toString('base64');
+    
+    let pond;
+    try {
+        pond = await findPondByUserId(req.user._doc._id);
+        pond.coverImage = 'data:image/png;base64,' + base64Img;
+        await pond.save();
+    } catch (err) {
+        console.log(err);
+        res.json({
+            status: 'Error uploading image'
+        });
+    }
+    console.log(pond);
+
+    res.json({
+        status: 'ok'
+    });
 }
 
 // ====== EXPORTS ======
 
 module.exports = {
-    page
+    page,
+    uploadCover
 };

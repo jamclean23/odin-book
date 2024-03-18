@@ -2,14 +2,18 @@
 
 // ====== IMPORTS ======
 
-import mongoose from 'mongoose';
+const defaultCover = require('../assets/defaultCover.js');
 
-import defaultCover from '../assets/defaultCover.js';
+const mongoose = require('mongoose');
 
 // ====== DEFINITION ======
 
 const pondSchema = new mongoose.Schema({
     owner: {
+        type: String,
+        required: true
+    },
+    username: {
         type: String,
         required: true
     },

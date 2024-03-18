@@ -1,4 +1,4 @@
-// Find a google users document in the database 
+// Find a local users document in the database
 
 // ====== IMPORTS ======
 
@@ -18,22 +18,21 @@ require('dotenv').config({
 // ====== FUNCTIONS ======
 /**
  * 
- * @param {String} googleId - Id from google user object 
+ * @param {String} userId - User's id in string format
  */
-async function findGoogleUser (googleId) {
+async function findUserById  (userId) {
+    if (!userId || typeof userId != 'string') {
+        return null;
+    }
+
     let user = {};
 
     try {
         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
         
-        // Causes trace warnings when too many listeners at the same time
-        // const db = mongoose.connection;
-        // db.on('error', () => {
-        //     throw new Error("Mongoose Connection Error");
-        // });
+        user = await User.findOne({ "_id": new mongoose.Types.ObjectId(userId) });
         
-        user = await User.findOne({ "googleId": googleId });
-        
+
     } catch (err) {
         console.log(err);
     }
@@ -48,5 +47,4 @@ async function findGoogleUser (googleId) {
 
 // ====== EXPORTS ======
 
-
-module.exports = findGoogleUser;
+module.exports = findUserById;
