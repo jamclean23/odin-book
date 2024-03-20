@@ -6,10 +6,10 @@
 function checkAuth (req, res, next) {
     if (req.isAuthenticated()) {
 
-        console.log('---------- Check Auth Authenticated ---------------');
+        // console.log('---------- Check Auth Authenticated ---------------');
         return next();
     } else {
-        console.log('------------ Check Auth Not Authenticated ------------');
+        // console.log('------------ Check Auth Not Authenticated ------------');
         res.redirect('/');
     }
 }

@@ -12,6 +12,11 @@ import SmallHeader from '../../components/SmallHeader/SmallHeader.js';
 import '../../assets/common.css';
 import './App.css';
 
+// Functions
+import unsanitizeString from '../../functions/unsanitizeString.js';
+
+
+
 // ====== FUNCTIONS ======
 
 function App (props) {
@@ -21,7 +26,7 @@ function App (props) {
     const [pondObj, setPondObj] = useState({});
     const hasRendered = useRef(false);
     const [isEditingBio, setIsEditingBio] = useState(false);
-    const [aboutTextAreaContent, setAboutTextAreaContent] = useState(pondObj.bio);
+    const [aboutTextAreaContent, setAboutTextAreaContent] = useState('');
 
 
 
@@ -37,8 +42,19 @@ function App (props) {
 
     // == FUNCTIONS
 
-    function initPondObj () {
-        setPondObj(JSON.parse(document.querySelector('#pondInfo').getAttribute('data-content')));
+    async function initPondObj () {
+        // setPondObj(JSON.parse(document.querySelector('#pondInfo').getAttribute('data-content')));
+        let pond;
+        try {
+            const response = await fetch('/pond/get_pond');
+            pond = await response.json();
+        } catch (err) {
+            console.log(err);
+        }
+
+        if (pond) {
+            setPondObj(pond);
+        }
     }
 
     async function handleCoverImgChange (event) {
@@ -73,7 +89,6 @@ function App (props) {
                 const result = await response.json();
         
                 if (result.status === 'ok') {
-                    console.log('Updating pond object');
                     const pondCopy = Object.assign({}, pondObj);
                     pondCopy.coverImage = base64Img;
                     setPondObj(pondCopy);
@@ -91,6 +106,7 @@ function App (props) {
     }
 
     function handleEditAboutClick () {
+        setAboutTextAreaContent(unsanitizeString(pondObj.bio));
         setIsEditingBio(true);
     }
 
@@ -102,18 +118,29 @@ function App (props) {
         const newBioText = aboutTextAreaContent;
         setIsEditingBio(false);
 
-        const response = await fetch('/pond/submit_bio', {
-            headers: {
-                "Content-Type": "application/json"
-            },
-            method: "POST",
-            body: JSON.stringify({
-                newBioText
-            })
-        });
+        try {
 
-        const result = await response.json();
-        console.log(result);
+            const response = await fetch('/pond/submit_bio', {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                method: "POST",
+                body: JSON.stringify({
+                    "newBioText": newBioText || ''
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.msg === 'Bio saved') {
+                const pondCopy = Object.assign({}, pondObj);
+                pondCopy.bio = result.bio;
+                setPondObj(pondCopy);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+        
     }
 
     // == RENDER
@@ -158,9 +185,10 @@ function App (props) {
                     </div>
                     {(() => {
                         if (isEditingBio) {
-                            return <textarea onChange={handleAboutTextAreaChange}>{aboutTextAreaContent}</textarea>
+                    console.log('Updating pond object');
+                            return <textarea onChange={handleAboutTextAreaChange} value={aboutTextAreaContent}></textarea>
                         } else {
-                            return <p className='about'>{pondObj.bio}</p>
+                            return <p className='about'>{unsanitizeString(pondObj.bio)}</p>
                         }
                     })()}
                 </section>

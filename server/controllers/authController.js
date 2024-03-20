@@ -29,7 +29,7 @@ async function googleLogin (req, res) {
 }
 
 async function googleRegister (req, res) {
-    console.log('REGISTER NEW GOOGLE USER');
+    // console.log('REGISTER NEW GOOGLE USER');
     let user = null;
     try {
         user = await findGoogleUser(req.user.id);

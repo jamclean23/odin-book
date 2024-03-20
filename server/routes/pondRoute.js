@@ -15,6 +15,7 @@ const controller = require('../controllers/pondController.js');
 
 // ====== ROUTES ======
 
+router.get('/get_pond', controller.getPond);
 router.post('/submit_bio', controller.submitBio);
 router.post('/upload_cover', checkAuth, controller.uploadCover);
 router.use('/:username', checkAuth, controller.page);

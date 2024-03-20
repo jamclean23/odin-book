@@ -10,12 +10,15 @@ const findUser = require('../functions/findUser');
 const findGoogleUser = require('../functions/findGoogleUser');
 const findPondByUserId = require('../functions/findPondByUserId');
 const addPond = require('../functions/addPond.js');
+const sanitizeString = require('../functions/sanitizeString.js');
+const unsanitizeString = require('../functions/unsanitizeString.js');
+const getPondFromUserObj = require('../functions/getPondFromUserObj.js');
 
 
 // ====== FUNCTIONS ======
 
 async function page (req, res) {
-    console.log('POND ACCESSED');
+    // console.log('POND ACCESSED');
     let pondUser;
     if (req.params.hasOwnProperty('username')) {
         pondUser = req.params.username;
@@ -40,17 +43,12 @@ async function page (req, res) {
     }
 
     if (!user) {
-        console.log('NO USER');
+        // console.log('NO USER');
         req.logout((err) => {
             res.redirect('/');
         });
         return;
     }
-
-    console.log('USER');
-    console.log(user);
-
-
 
     if (user.username === pondUser || !pondUser) {
         let pond;
@@ -100,8 +98,62 @@ async function uploadCover (req, res) {
 }
 
 async function submitBio (req, res) {
-    console.log(req.user);
-    console.log(req.body);
+    
+    if (!req.user) {
+        res.status(400).json({
+            msg: 'Error, user not found'
+        });
+    }
+    
+    let pond;
+    try {
+        pond = await getPondFromUserObj(req.user);
+    } catch (err) {
+        console.log(err);
+    }
+
+    if (!pond) {
+        res.status(400).json({
+            msg: 'Error, pond not found'
+        });
+    }
+
+    if (!("newBioText" in req.body) || !(typeof req.body.newBioText === 'string')) {
+        res.status(400).json({
+            msg: 'Error, bad scheme in request'
+        });
+        return;
+    }
+
+    const sanitizedText = sanitizeString(req.body.newBioText);
+
+    pond.bio = sanitizedText;
+    await pond.save();
+    res.status(200).json({
+        msg: 'Bio saved',
+        bio: sanitizedText
+    });
+}
+
+async function getPond (req, res) {
+    if (!req.user) {
+        res.status(400).json({
+            msg: 'Error, user not found'
+        });
+    }
+
+    let pond;
+    try {
+        pond = await getPondFromUserObj(req.user);
+    } catch (err) {
+        console.log(err);
+    }
+
+    if (pond) {
+        res.json(pond);
+    } else {
+        res.json({});
+    }
 }
 
 // ====== EXPORTS ======
@@ -109,5 +161,6 @@ async function submitBio (req, res) {
 module.exports = {
     page,
     uploadCover,
-    submitBio
+    submitBio,
+    getPond
 };
