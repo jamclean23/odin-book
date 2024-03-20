@@ -27,7 +27,7 @@ textarea {
     color: white;
 }
 
-textarea:focus {
+.ribbitWrapper textarea:focus {
     width: 100%;
     height: 5rem;
 }
@@ -94,4 +94,25 @@ textarea:focus {
 .coverImgWrapper:hover .changeCoverBtn {
     display: initial;
     pointer-events: all;
+}
+
+.aboutHeaderWrapper {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.aboutHeaderWrapper *:first-child {
+    margin-right: 2rem;
+}
+
+.aboutHeaderWrapper .checkBtn {
+    margin-right: 1rem;
+}
+
+.aboutHeaderWrapper button {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 4px;
+    background-color: var(--dark-gray);
+    color: white;
 }

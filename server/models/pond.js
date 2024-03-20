@@ -20,6 +20,10 @@ const pondSchema = new mongoose.Schema({
     coverImage: {
         type: String,
         default: defaultCover
+    },
+    bio: {
+        type: String,
+        default: ''
     }
 });
 

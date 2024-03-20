@@ -70,7 +70,7 @@ app.use('/logout', checkAuth, logoutRoute);
 app.use('/pond', checkAuth, pondRoute);
 app.use('/test', checkAuth, testRoute);
 app.use('/fourOhFour', fourOhFourRoute);
-app.use('/', checkNotAuth, indexRoute);
+app.use('/', indexRoute);
 app.use('/*', fourOhFourRoute);
 
 

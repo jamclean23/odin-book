@@ -15,6 +15,7 @@ const addPond = require('../functions/addPond.js');
 // ====== FUNCTIONS ======
 
 async function page (req, res) {
+    console.log('POND ACCESSED');
     let pondUser;
     if (req.params.hasOwnProperty('username')) {
         pondUser = req.params.username;
@@ -39,11 +40,15 @@ async function page (req, res) {
     }
 
     if (!user) {
+        console.log('NO USER');
         req.logout((err) => {
             res.redirect('/');
-            return;
         });
+        return;
     }
+
+    console.log('USER');
+    console.log(user);
 
 
 
@@ -94,9 +99,15 @@ async function uploadCover (req, res) {
     });
 }
 
+async function submitBio (req, res) {
+    console.log(req.user);
+    console.log(req.body);
+}
+
 // ====== EXPORTS ======
 
 module.exports = {
     page,
-    uploadCover
+    uploadCover,
+    submitBio
 };

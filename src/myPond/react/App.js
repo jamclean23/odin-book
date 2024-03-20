@@ -20,6 +20,9 @@ function App (props) {
 
     const [pondObj, setPondObj] = useState({});
     const hasRendered = useRef(false);
+    const [isEditingBio, setIsEditingBio] = useState(false);
+    const [aboutTextAreaContent, setAboutTextAreaContent] = useState(pondObj.bio);
+
 
 
     // == USE EFFECT
@@ -83,6 +86,36 @@ function App (props) {
         reader.readAsDataURL(file);
     }
 
+    function handleAboutTextAreaChange (event) {
+        setAboutTextAreaContent(event.target.value);
+    }
+
+    function handleEditAboutClick () {
+        setIsEditingBio(true);
+    }
+
+    function handleCancelEditAboutClick () {
+        setIsEditingBio(false);
+    }
+
+    async function handleSubmitEditAboutClick () {
+        const newBioText = aboutTextAreaContent;
+        setIsEditingBio(false);
+
+        const response = await fetch('/pond/submit_bio', {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify({
+                newBioText
+            })
+        });
+
+        const result = await response.json();
+        console.log(result);
+    }
+
     // == RENDER
 
     return (<div className='App'>
@@ -109,8 +142,27 @@ function App (props) {
                 </section>
 
                 {/* Bio */}
-                <section>
-                    <h2>About Me</h2>
+                <section className='aboutWrapper'>
+                    <div className='aboutHeaderWrapper'>
+                        <h2>About Me</h2>
+                        {(() => {
+                            if (!isEditingBio) {
+                                return <button onClick={handleEditAboutClick}>🖉</button>
+                            } else {
+                                return <>
+                                    <button className='checkBtn' onClick={handleSubmitEditAboutClick}>✔</button>
+                                    <button className='xBtn' onClick={handleCancelEditAboutClick}>X</button>
+                                </>
+                            }
+                        })()}
+                    </div>
+                    {(() => {
+                        if (isEditingBio) {
+                            return <textarea onChange={handleAboutTextAreaChange}>{aboutTextAreaContent}</textarea>
+                        } else {
+                            return <p className='about'>{pondObj.bio}</p>
+                        }
+                    })()}
                 </section>
 
                 {/* Ribbit */}
