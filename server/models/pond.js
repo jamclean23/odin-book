@@ -24,7 +24,8 @@ const pondSchema = new mongoose.Schema({
     bio: {
         type: String,
         default: ''
-    }
+    },
+    ribbitIds: [String]
 });
 
 const Pond = new mongoose.model('ponds', pondSchema);

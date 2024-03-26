@@ -27,6 +27,9 @@ function App (props) {
     const hasRendered = useRef(false);
     const [isEditingBio, setIsEditingBio] = useState(false);
     const [aboutTextAreaContent, setAboutTextAreaContent] = useState('');
+    const [ribbitImgBlob, setRibbitImgBlob] = useState();
+    const [ribbitImgBase64, setRibbitImgBase64] = useState();
+    const [ribbitTextArea, setRibbitTextArea] = useState('');
 
 
 
@@ -143,6 +146,97 @@ function App (props) {
         
     }
 
+    async function handleRibbitClick () {
+        const ribbitObj = {};
+
+        // Build submission object
+        ribbitObj.content = ribbitTextArea;
+
+        // Submit if there's any content and receive the Ribbit id
+        let ribbitId;
+        if (ribbitObj.content) {
+            try {
+                const response = await fetch('/pond/submit_ribbit', {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    method: "POST",
+                    body: JSON.stringify(ribbitObj)
+                });
+                const result = await response.json();
+                if ("ribbitId" in result) {
+                    ribbitId = result.ribbitId;
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        // Notify user of error if Ribbit wasn't added
+        if (!ribbitId) {
+            alert('An error occured while trying to add a Ribbit, Try again later.');
+            return;
+        }
+
+        // Handle image submission
+        if (ribbitImgBlob) {
+            let success = false;
+            try {
+                const response = await fetch(`/pond/add_ribbit_img/${ribbitId}`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/octet-stream"
+                    },
+                    body: ribbitImgBlob
+                })
+                const result = response.json();
+                if ('msg' in result && result.msg === 'success') {
+                    success = true;
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        // Update
+    }
+
+    async function handleChangeRibbitImgBtnClick (event) {
+        const file = event.target.files[0];
+
+        const reader = new FileReader();
+
+        reader.onload = async (event) => {
+            const base64Img = event.target.result;
+
+            let imgBlob;
+            try {
+                const response = await fetch(base64Img);
+                imgBlob = await response.blob();
+            } catch (err) {
+                console.log(err);
+            }
+
+            if (!imgBlob) {
+                return;
+            }
+
+            setRibbitImgBase64(event.target.result);
+            setRibbitImgBlob(imgBlob);
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    function handlePreviewXClick () {
+        setRibbitImgBase64();
+        setRibbitImgBlob();
+    }
+
+    function handleRibbitTextAreaChange (event) {
+        setRibbitTextArea(event.target.value);
+    }
+
     // == RENDER
 
     return (<div className='App'>
@@ -177,16 +271,25 @@ function App (props) {
                                 return <button onClick={handleEditAboutClick}>🖉</button>
                             } else {
                                 return <>
-                                    <button className='checkBtn' onClick={handleSubmitEditAboutClick}>✔</button>
-                                    <button className='xBtn' onClick={handleCancelEditAboutClick}>X</button>
+                                    <button 
+                                        className='checkBtn' 
+                                        onClick={handleSubmitEditAboutClick}
+                                    >✔</button>
+                                    <button 
+                                        className='xBtn' 
+                                        onClick={handleCancelEditAboutClick}
+                                    >X</button>
                                 </>
                             }
                         })()}
                     </div>
                     {(() => {
                         if (isEditingBio) {
-                    console.log('Updating pond object');
-                            return <textarea onChange={handleAboutTextAreaChange} value={aboutTextAreaContent}></textarea>
+                            return <textarea 
+                                        className='editAboutTextArea' 
+                                        onChange={handleAboutTextAreaChange} 
+                                        value={aboutTextAreaContent}>    
+                                    </textarea>
                         } else {
                             return <p className='about'>{unsanitizeString(pondObj.bio)}</p>
                         }
@@ -196,8 +299,38 @@ function App (props) {
                 {/* Ribbit */}
                 <section className='ribbitWrapper'>
                     <h2>What's new?</h2>
-                    <textarea placeholder='Type here!'/>
-                    <button>Ribbit!</button>
+                    {(() => {
+                        if (ribbitImgBase64) {
+                            return <>
+                                <div className='ribbitPreviewWrapper'>
+                                    <button onClick={handlePreviewXClick} className='xBtn'>X</button>
+                                    <img className='ribbitPreviewImg' src={ribbitImgBase64}/>
+                                </div>
+                            </>
+                        } else {
+                            return <>
+                                <div className='changeRibbitImgWrapper'>
+                                    <label>Add an Image:</label>
+                                    <button className='changeRibbitImgBtn'>
+                                        +
+                                        <input 
+                                            onChange={handleChangeRibbitImgBtnClick} 
+                                            className='ribbitFileInput' 
+                                            type='file'
+                                        />
+                                    </button>
+                                </div>
+                            </>
+                        }
+                    })()}
+                    
+                    <textarea 
+                        className='ribbitContentTextArea' 
+                        onChange={handleRibbitTextAreaChange} 
+                        placeholder='Type here!'
+                        value={ribbitTextArea}
+                    />
+                    <button onClick={handleRibbitClick} className='ribbitBtn'>Ribbit!</button>
                 </section>
 
                 {/* Ribbits */}

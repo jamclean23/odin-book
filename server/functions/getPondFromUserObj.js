@@ -17,13 +17,10 @@ async function getPondFromUserObj (userObj) {
         console.log(err);
     }
 
-    console.log('USER ID : ' + userId);
     if (userId) {
         let pond;
         try {
             pond = await findPondByUserId(userId);
-            console.log('POND');
-            console.log(pond);
             return pond;
         } catch (err) {
             console.log(err);

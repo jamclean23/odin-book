@@ -7,7 +7,6 @@ const findGoogleUser = require('./findGoogleUser');
 // ====== FUNCTIONS ======
 
 async function getIdFromUser (userObj) {
-    console.log(userObj);
     if ((typeof userObj === 'object')) {
         if ("provider" in userObj) {
             switch (userObj.provider) {

@@ -13,6 +13,10 @@ const addPond = require('../functions/addPond.js');
 const sanitizeString = require('../functions/sanitizeString.js');
 const unsanitizeString = require('../functions/unsanitizeString.js');
 const getPondFromUserObj = require('../functions/getPondFromUserObj.js');
+const getIdFromUser = require('../functions/getIdFromUser.js');
+const addRibbit = require('../functions/addRibbit.js');
+const addRibbitImgToDb = require('../functions/addRibbitImg.js');
+const getRibbitById = require('../functions/getRibbitById.js');
 
 
 // ====== FUNCTIONS ======
@@ -90,11 +94,102 @@ async function uploadCover (req, res) {
             status: 'Error uploading image'
         });
     }
-    console.log(pond);
 
     res.json({
         status: 'ok'
     });
+}
+
+async function submitRibbit (req, res) {
+    let ribbitObj = {};
+    if ("body" in req && "content" in req.body) {
+
+        // Text content
+        ribbitObj.content = req.body.content || '';
+
+        // Owner assignment
+        try {   
+            ribbitObj.owner = await getIdFromUser(req.user);
+        } catch (err) {
+            console.log(err);
+        }
+        if (!ribbitObj.owner) {
+            response.status(400).json({
+                msg: 'No user found'
+            });
+            return;
+        }
+
+    } else {
+        res.status(400).json({
+            msg: 'Error, no body in request'
+        });
+        return;
+    }
+
+    // Submit Ribbit and return its id
+    try {
+        const ribbitId = await addRibbit(ribbitObj);
+        res.json({
+            msg: 'success',
+            ribbitId: ribbitId
+        });
+    } catch (err) {
+        res.status(400).json({
+            msg: 'Error while adding ribbit'
+        });
+    }
+}
+
+async function addRibbitImg (req, res) {
+
+    // Check for a ribbit id
+    if (!("ribbitId" in req.params)) {
+        res.status(400).json({
+            msg: 'Error uploading image, no ribbit id provided'
+        });
+        return;
+    }
+
+    // Verify that ribbit exists
+    if (!(await getRibbitById(req.params.ribbitId))) {
+        res.status(400).json({
+            msg: 'Error finding Ribbit owner'
+        });
+        return;
+    }
+
+
+
+    const base64Img = Buffer.from(req.body, 'binary').toString('base64');
+    
+
+    try {
+        const result = await addRibbitImgToDb(req.params.ribbitId, base64Img);
+
+        if (result === 'success') {
+            res.json({
+                msg: 'success'
+            });
+            return;
+        } else {
+            res.status(400).json({
+                msg: 'Error uploading image'
+            });
+            return;
+        }
+    } catch (err) {
+        console.log(err);
+        res.json({
+            msg: 'Error uploading image'
+        });
+        return;
+    }
+
+    res.json({
+        msg: 'success'
+    });
+    return;
 }
 
 async function submitBio (req, res) {
@@ -162,5 +257,7 @@ module.exports = {
     page,
     uploadCover,
     submitBio,
-    getPond
+    getPond,
+    submitRibbit,
+    addRibbitImg
 };
