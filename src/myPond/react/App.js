@@ -3,7 +3,7 @@
 // ====== IMPORTS ======
 
 // React
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createElement, useEffect, useRef, useState } from 'react';
 
 // Components
 import SmallHeader from '../../components/SmallHeader/SmallHeader.js';
@@ -14,6 +14,8 @@ import './App.css';
 
 // Functions
 import unsanitizeString from '../../functions/unsanitizeString.js';
+import uniqid from 'uniqid';
+
 
 
 
@@ -30,6 +32,8 @@ function App (props) {
     const [ribbitImgBlob, setRibbitImgBlob] = useState();
     const [ribbitImgBase64, setRibbitImgBase64] = useState();
     const [ribbitTextArea, setRibbitTextArea] = useState('');
+    const [ribbits, setRibbits] = useState([]);
+    const [ribbitDivs, setRibbitDivs] = useState([]);
 
 
 
@@ -38,15 +42,100 @@ function App (props) {
     useEffect(() => {
         if (!hasRendered.current) {
             initPondObj();
+            initRibbits();
             hasRendered.current = true;
         }
-
     }, []);
+
+    // Handle Ribbits change
+    useEffect(() => {
+        updateRibbitsSection();
+    }, [ribbits]);
+
+    // log ribbit divs
+    useEffect(() => {
+
+    }, [ribbitDivs]);
 
     // == FUNCTIONS
 
+    async function initRibbits () {
+        await addRibbits(0, 20);
+    }
+
+    async function addRibbits (startIndex, quantity) {
+        const response = await fetch('/pond/get_ribbits', {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify({
+                range: {
+                    startIndex,
+                    quantity
+                }
+            })
+        });
+
+        const result = await response.json();
+
+        if ("ribbits" in result) {
+            const ribbitsCopy = ribbits.concat(result.ribbits);
+            setRibbits(ribbitsCopy);
+        }
+    }
+
+    async function updateRibbitsSection () {
+        
+        let newRibbitsArray = [];
+
+        for (let i = 0; i < ribbits.length; i++) {
+            const ribbit = ribbits[i];
+            // const existingDiv = document.querySelector(`[data-id="${ribbit._id}"]`);
+            // if (!existingDiv) {
+            //     addRibbitDiv(ribbit);
+            // }
+                
+            let newRibbitDiv;
+            try {
+                newRibbitDiv = await createRibbitDiv(ribbit);
+            } catch (err) {
+                console.log(err);
+            }
+            newRibbitsArray.push(newRibbitDiv);
+
+        }
+
+        const ribbitDivsCopy = ribbitDivs.concat(newRibbitsArray);
+
+        setRibbitDivs(ribbitDivsCopy);
+
+    }
+
+    async function createRibbitDiv (ribbitObj) {
+        let username;
+
+        try {
+            const response = await fetch(`/pond/id_to_username/${ribbitObj.owner}`);
+            const result = await response.json();
+            console.log(result);
+            username = result.username;
+        } catch (err) {
+            console.log(err);
+            username = 'Unknown'
+        }
+
+        console.log(username);
+
+        const newRibbitDiv = <div className='ribbitDiv' key={uniqid()} data-id={ribbitObj._id}>
+            <h3>{username}</h3>
+            <p>{ribbitObj.content}</p>
+        </div>
+        return newRibbitDiv;
+
+    }
+
     async function initPondObj () {
-        // setPondObj(JSON.parse(document.querySelector('#pondInfo').getAttribute('data-content')));
         let pond;
         try {
             const response = await fetch('/pond/get_pond');
@@ -253,7 +342,12 @@ function App (props) {
                     <img id='coverImg' src={pondObj.coverImage}/>
                     <button className='changeCoverBtn'>
                         🖉
-                        <input onChange={handleCoverImgChange} className='fileInput' type='file' />
+                        <input 
+                            onChange={handleCoverImgChange} 
+                            className='fileInput' 
+                            type='file' 
+                            accept='.png'
+                        />
                     </button>
                 </section>
 
@@ -317,6 +411,7 @@ function App (props) {
                                             onChange={handleChangeRibbitImgBtnClick} 
                                             className='ribbitFileInput' 
                                             type='file'
+                                            accept='.png'
                                         />
                                     </button>
                                 </div>
@@ -336,7 +431,9 @@ function App (props) {
                 {/* Ribbits */}
                 <div className='ribbitsWrapper'></div>
                 <h2>Your Ribbits</h2>
-                <div className='yourRibbitsWrapper'></div>
+                <div className='yourRibbitsWrapper'>
+                    {ribbitDivs}
+                </div>
             </div>
         </main>
     </div>);

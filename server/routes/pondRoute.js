@@ -15,7 +15,9 @@ const controller = require('../controllers/pondController.js');
 
 // ====== ROUTES ======
 
+router.get('/id_to_username/:id', controller.idToUsername);
 router.get('/get_pond', controller.getPond);
+router.post('/get_ribbits', controller.getRibbits);
 router.post('/add_ribbit_img/:ribbitId', controller.addRibbitImg);
 router.post('/submit_bio', controller.submitBio);
 router.post('/upload_cover', checkAuth, controller.uploadCover);

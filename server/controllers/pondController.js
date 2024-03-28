@@ -17,6 +17,8 @@ const getIdFromUser = require('../functions/getIdFromUser.js');
 const addRibbit = require('../functions/addRibbit.js');
 const addRibbitImgToDb = require('../functions/addRibbitImg.js');
 const getRibbitById = require('../functions/getRibbitById.js');
+const retrieveRibbitsByRange = require('../functions/retrieveRibbitsByRange.js');
+const findUserById = require('../functions/findUserById.js');
 
 
 // ====== FUNCTIONS ======
@@ -230,6 +232,68 @@ async function submitBio (req, res) {
     });
 }
 
+// This functions get ribbits specifically for the user's own page
+async function getRibbits (req, res) {
+    console.log('GETTING RIBBITS');
+
+    // Fail conditions
+    if (!("range" in req.body) || !("startIndex" in req.body.range)) {
+        res.status(400).json({
+            msg: 'Bad Request Schema'
+        });
+        return;
+    }
+
+    // Parameters
+    const startIndex = req.body.range.startIndex;
+    const quantity = ("quantity" in req.body.range)
+        ? req.body.range.quantity
+        : null
+    ;
+    
+
+    // Get User Id
+    let userId;
+    try {
+        userId = await getIdFromUser(req.user);
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            msg: 'Error Retrieving User Id'
+        });
+        return;
+    }
+    // User fail conditions
+    if (!userId) {
+        res.status(400).json({
+            msg: 'User not found'
+        });
+        return;
+    }
+
+    // Retrieve ribbits within specified range, sorted by date
+    let ribbits;
+    try {
+        ribbits = await retrieveRibbitsByRange(userId, startIndex, quantity);
+    } catch (err) {
+        console.log(err);
+    }
+
+    console.log('RIBBITS');
+    console.log(ribbits);
+
+    if (Array.isArray(ribbits)) {
+        res.json({
+            ribbits
+        });
+        return;
+    } else {
+        res.status(400).json({
+            msg: 'Could not retrieve Ribbits'
+        });
+    }
+}
+
 async function getPond (req, res) {
     if (!req.user) {
         res.status(400).json({
@@ -251,6 +315,26 @@ async function getPond (req, res) {
     }
 }
 
+async function idToUsername (req, res) {
+    let username;
+    try {
+        const user = await findUserById(req.params.id);
+        
+        if (user && "username" in user) {
+            username = user.username;
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            msg: 'Error fetching user'
+        });
+        return;
+    }
+    res.json({
+        username
+    });
+}
+
 // ====== EXPORTS ======
 
 module.exports = {
@@ -259,5 +343,7 @@ module.exports = {
     submitBio,
     getPond,
     submitRibbit,
-    addRibbitImg
+    addRibbitImg,
+    getRibbits,
+    idToUsername
 };

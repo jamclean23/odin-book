@@ -31,7 +31,6 @@ async function findUserById  (userId) {
         await mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
         
         user = await User.findOne({ "_id": new mongoose.Types.ObjectId(userId) });
-        
 
     } catch (err) {
         console.log(err);

@@ -28,7 +28,7 @@ textarea {
     border-radius: 4px;
 }
 
-.ribbitWrapper textarea:focus {
+.ribbitWrapper textarea {
     width: 100%;
     height: 5rem;
 }
@@ -185,3 +185,11 @@ textarea {
 .ribbitPreviewWrapper .xBtn:hover {
     background-color: lightcoral;
 } 
+
+.ribbitDiv {
+    border: 1px solid white;
+    padding: .5rem;
+    border-radius: 4px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
