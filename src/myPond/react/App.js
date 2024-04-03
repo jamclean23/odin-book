@@ -113,23 +113,42 @@ function App (props) {
     }
 
     async function createRibbitDiv (ribbitObj) {
-        let username;
 
+        // Get username from ribbitObj
+        let username;
         try {
             const response = await fetch(`/pond/id_to_username/${ribbitObj.owner}`);
             const result = await response.json();
-            console.log(result);
             username = result.username;
         } catch (err) {
             console.log(err);
             username = 'Unknown'
         }
 
-        console.log(username);
+        // Fetch any single existing ribbit image
+        let ribbitImg;
+        try {
+            const response = await fetch('/pond/get_ribbit_img', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "ribbitId": ribbitObj._id.toString()
+                })
+            });
+            const result = await response.json();
+            if ("img" in result) {
+                ribbitImg = result.img;
+            }
+        } catch (err) {
+            console.log(err);
+        }
 
         const newRibbitDiv = <div className='ribbitDiv' key={uniqid()} data-id={ribbitObj._id}>
             <h3>{username}</h3>
             <p>{ribbitObj.content}</p>
+            <img className='ribbitImg' src={ribbitImg} />
         </div>
         return newRibbitDiv;
 

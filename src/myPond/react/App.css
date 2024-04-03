@@ -193,3 +193,9 @@ textarea {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
+.ribbitImg {
+    max-height: 10rem;
+    width: 100%;
+    object-fit: contain;
+}

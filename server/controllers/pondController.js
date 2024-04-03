@@ -19,6 +19,7 @@ const addRibbitImgToDb = require('../functions/addRibbitImg.js');
 const getRibbitById = require('../functions/getRibbitById.js');
 const retrieveRibbitsByRange = require('../functions/retrieveRibbitsByRange.js');
 const findUserById = require('../functions/findUserById.js');
+const getImgByRibbitId = require('../functions/getImgByRibbitId.js');
 
 
 // ====== FUNCTIONS ======
@@ -335,6 +336,41 @@ async function idToUsername (req, res) {
     });
 }
 
+async function getRibbitImg (req, res) {
+    // Assign ribbitId
+    let ribbitId;
+    try {
+        ribbitId = req.body.ribbitId
+    } catch (err) { 
+        console.log(err);
+    }
+
+    if (!ribbitId) {
+        res.status(400).json({
+            msg: 'Error, ribbitId not found in request'
+        });
+        return;
+    }
+
+    // Get the image objet
+    let imgObj;
+    try {
+        imgObj = await getImgByRibbitId(ribbitId); 
+    } catch (err) {
+        console.log(err);
+        res.status(400).json({
+            msg: 'Error fetching image'
+        });
+        return;
+    }
+
+    if (imgObj) {
+        res.json(imgObj);
+    } else {
+        res.json({});
+    }
+}
+
 // ====== EXPORTS ======
 
 module.exports = {
@@ -345,5 +381,6 @@ module.exports = {
     submitRibbit,
     addRibbitImg,
     getRibbits,
-    idToUsername
+    idToUsername,
+    getRibbitImg
 };
