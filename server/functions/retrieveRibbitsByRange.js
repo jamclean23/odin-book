@@ -26,7 +26,7 @@ require('dotenv').config({
  */
 async function retrieveRibbitsByRange (owner, startIndex, quantity) {
     // Type checking
-    if (!(typeof owner === 'string') || !(typeof startIndex === 'number') || !(typeof quantity === 'number')) {
+    if (!(typeof owner === 'string') || !(typeof startIndex === 'number')) {
         throw new Error('Type error in parameters');
     }
     // Fail conditions
@@ -36,13 +36,22 @@ async function retrieveRibbitsByRange (owner, startIndex, quantity) {
 
     try {
         mongoose.connect(process.env.MONGO_CONNECT_USER_DATA);
+        let ribbits;
+        if (quantity) {
 
-        const ribbits = await Ribbit
+            ribbits = await Ribbit
             .find({ "owner": owner })
             .sort({"createdAt": -1})
             .skip(startIndex)
             .limit(quantity);
-        return ribbits;
+            return ribbits;
+        } else {
+            ribbits = await Ribbit
+            .find({ "owner": owner })
+            .sort({"createdAt": -1})
+            .skip(startIndex)
+            return ribbits;
+        }
     } catch (err) {
         console.log(err);
         return null;

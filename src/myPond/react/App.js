@@ -60,7 +60,7 @@ function App (props) {
     // == FUNCTIONS
 
     async function initRibbits () {
-        await addRibbits(0, 20);
+        await addRibbits(0);
     }
 
     async function addRibbits (startIndex, quantity) {
@@ -91,10 +91,6 @@ function App (props) {
 
         for (let i = 0; i < ribbits.length; i++) {
             const ribbit = ribbits[i];
-            // const existingDiv = document.querySelector(`[data-id="${ribbit._id}"]`);
-            // if (!existingDiv) {
-            //     addRibbitDiv(ribbit);
-            // }
                 
             let newRibbitDiv;
             try {
